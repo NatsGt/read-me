@@ -1,21 +1,21 @@
 "use strict";
-import { QueryInterface, DataTypes } from "sequelize";
+import { QueryInterface, DataTypes, Sequelize } from "sequelize";
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface: QueryInterface, Sequelize: typeof DataTypes) {
+  async up(queryInterface: QueryInterface) {
     await queryInterface.createTable("Bookclubs", {
       id: {
         allowNull: false,
         primaryKey: true,
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
+        type: DataTypes.UUID,
+        defaultValue: Sequelize.literal("uuid_generate_v4()"),
       },
       name: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       admin: {
-        type: Sequelize.UUID,
+        type: DataTypes.UUID,
         references: {
           model: "Users",
           key: "id",
@@ -23,13 +23,13 @@ module.exports = {
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.DATE,
+        type: DataTypes.DATE,
+        defaultValue: Sequelize.fn("now"),
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.DATE,
+        type: DataTypes.DATE,
+        defaultValue: Sequelize.fn("now"),
       },
     });
   },
